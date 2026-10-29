@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import precision_score, recall_score, f1_score
+
 
 df = pd.read_csv("Loan_Data.csv")
 
@@ -40,3 +42,16 @@ model = LogisticRegression(max_iter=100)
 model.fit(X_train_scaled, y_train)
 
 print("Logistic Regression model trained successfully!")
+
+prediction = model.predict(X_test_scaled)
+
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+
+precision = precision_score(y_test, prediction)
+recall = recall_score(y_test, prediction)
+f1 = f1_score(y_test, prediction)
+
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1-score:", f1)
