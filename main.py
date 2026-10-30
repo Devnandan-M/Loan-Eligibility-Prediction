@@ -19,14 +19,14 @@ df["Dependents"] = df["Dependents"].fillna(0)
 
 
 df = pd.get_dummies(df, drop_first=True)
-print(df.columns.tolist())
 X = df.drop("Loan_Status_Y", axis=1)
 y = df["Loan_Status_Y"]
+print(df.shape)
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
-    test_size=0.20,
+    test_size=0.33,
     random_state=42,
     stratify=y
 )
@@ -45,7 +45,6 @@ print("Logistic Regression model trained successfully!")
 
 prediction = model.predict(X_test_scaled)
 
-from sklearn.metrics import precision_score, recall_score, f1_score
 
 
 precision = precision_score(y_test, prediction)
@@ -55,3 +54,49 @@ f1 = f1_score(y_test, prediction)
 print("Precision:", precision)
 print("Recall:", recall)
 print("F1-score:", f1)
+
+
+# 1. Count the number of 0 and 1 values in the actual test data
+actual_counts = y_test.value_counts().sort_index()
+
+# 2. Count the number of 0 and 1 values predicted by the model
+predicted_counts = pd.Series(prediction).value_counts().sort_index()
+
+# 3 & 4. Create a grouped bar graph with titles and labels
+labels = ["No Stroke (0)", "Stroke (1)"]
+x = np.arange(len(labels))
+width = 0.35
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.bar(
+    x - width / 2,
+    actual_counts,
+    width,
+    label="Actual",
+    color="skyblue",
+    edgecolor="black",
+)
+ax.bar(
+    x + width / 2,
+    predicted_counts,
+    width,
+    label="Predicted",
+    color="salmon",
+    edgecolor="black",
+)
+
+ax.set_xlabel("Class Category", fontsize=12)
+ax.set_ylabel("Count", fontsize=12)
+ax.set_title(
+    "Comparison of Actual vs. Predicted Class Distributions",
+    fontsize=14,
+    weight="bold",
+)
+ax.set_xticks(x)
+ax.set_xticklabels(labels)
+ax.legend()
+
+plt.tight_layout()
+plt.savefig("Loan Eligibility prediction comparison.png", dpi=300, bbox_inches="tight")
+plt.show()
+
