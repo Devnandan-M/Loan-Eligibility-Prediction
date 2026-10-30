@@ -20,7 +20,7 @@ df["Dependents"] = df["Dependents"].fillna(0)
 df = pd.get_dummies(df, drop_first=True)
 X = df.drop("Loan_Status_Y", axis=1)
 y = df["Loan_Status_Y"]
-print(df.shape)
+
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
@@ -51,7 +51,7 @@ actual_counts = y_test.value_counts().sort_index()
 
 predicted_counts = pd.Series(prediction).value_counts().sort_index()
 
-labels = ["No Stroke (0)", "Stroke (1)"]
+labels = ["Not Eligible (0)", "Eligible (1)"]
 x = np.arange(len(labels))
 width = 0.35
 
@@ -93,7 +93,6 @@ fig, ax = plt.subplots(figsize=(6, 6))
 ConfusionMatrixDisplay.from_predictions(
     y_test, prediction, display_labels=["Not Eligible", "Eligible"], cmap="Blues", ax=ax
 )
-print(prediction)
 plt.title("Confusion Matrix", fontsize=14, weight="bold")
 
 # Optional: Save the plot to your device
