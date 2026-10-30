@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import precision_score, recall_score, f1_score
+from sklearn.metrics import ConfusionMatrixDisplay
+
 
 df = pd.read_csv("Loan_Data.csv")
 
@@ -23,7 +25,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
     test_size=0.33,
-    random_state=42,
+    random_state=100,
     stratify=y
 )
 scaler = StandardScaler()
@@ -85,3 +87,14 @@ ax.legend()
 plt.tight_layout()
 plt.savefig("Loan Eligibility prediction comparison.png", dpi=300, bbox_inches="tight")
 
+
+# Plot the confusion matrix directly from true and predicted values
+fig, ax = plt.subplots(figsize=(6, 6))
+ConfusionMatrixDisplay.from_predictions(
+    y_test, prediction, display_labels=["Eligible", "Not Eligible"], cmap="Blues", ax=ax
+)
+
+plt.title("Confusion Matrix", fontsize=14, weight="bold")
+
+# Optional: Save the plot to your device
+plt.savefig("confusion_matrix.png", dpi=300, bbox_inches="tight")
