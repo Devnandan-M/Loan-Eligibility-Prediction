@@ -91,9 +91,9 @@ plt.savefig("Loan Eligibility prediction comparison.png", dpi=300, bbox_inches="
 # Plot the confusion matrix directly from true and predicted values
 fig, ax = plt.subplots(figsize=(6, 6))
 ConfusionMatrixDisplay.from_predictions(
-    y_test, prediction, display_labels=["Eligible", "Not Eligible"], cmap="Blues", ax=ax
+    y_test, prediction, display_labels=["Not Eligible", "Eligible"], cmap="Blues", ax=ax
 )
-
+print(prediction)
 plt.title("Confusion Matrix", fontsize=14, weight="bold")
 
 # Optional: Save the plot to your device
